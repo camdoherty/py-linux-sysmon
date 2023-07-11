@@ -13,6 +13,9 @@ The script generates an HTML file with a table that includes all the system para
 ## Requirements
 
 pysysmon requires Python 3 and the psutil module. You can install psutil using pip or apt:
+
 ```pip install psutil```
+
 or
+
 ```apt install python3-psutil```
