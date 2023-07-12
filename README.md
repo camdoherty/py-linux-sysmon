@@ -1,18 +1,20 @@
 # pysysmon
 
-pysysmon is a Python script that monitors the following system parameters on Linux:
+A Python script that reads the following system parameters using psutil
 
-- system errors (24 hours)
-- disk(s) usage
-- CPUs usage
-- memory utilization %
-- CPU and GPU temperature
+- disk(s) usage %
+- CPU(s) usage %
+- memory usage %
+- CPU temp in °C
 
-The script generates an HTML file with a table that includes all the system parameters and their respective values.
+Then generates an HTML file with a table listing the parameters/values
 
 ## Requirements
 
-pysysmon requires Python 3 and the psutil module. You can install psutil using pip or apt:
+- Python3 
+- psutil
+
+Install using pip or apt:
 
 ```pip install psutil```
 
