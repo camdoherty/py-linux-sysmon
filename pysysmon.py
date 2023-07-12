@@ -1,7 +1,7 @@
 import psutil
 
 # network usage in bytes
-net_io = psutil.net_io_counters(interval=1)
+net_io = psutil.net_io_counters()
 net_in_mb = net_io.bytes_recv
 net_out_mb = net_io.bytes_sent
 
