@@ -1,13 +1,13 @@
 import psutil
 
-# gives a single float value
+# CPU usage (average of all cores)
 cpu_usage = psutil.cpu_percent(interval=1) / psutil.cpu_count()
 
-# gives an object with many fields
+# Memory usage
 mem = psutil.virtual_memory()
 mem_usage = mem.percent
 
-# disk usage
+# Disk usage
 disk_usage = psutil.disk_usage('/').percent
 
 # CPU temperature
