@@ -1,24 +1,24 @@
 import psutil
 
-def get_cpu_usage():
-    return psutil.cpu_percent(interval=1)
+# gives a single float value
+cpu_usage = psutil.cpu_percent()
 
-def get_memory_usage():
-    return psutil.virtual_memory().percent
+# gives an object with many fields
+mem = psutil.virtual_memory()
+mem_usage = mem.percent
 
-def get_disk_usage():
-    return psutil.disk_usage('/').percent
+# disk usage
+disk_usage = psutil.disk_usage('/').percent
 
-def get_cpu_temperature():
-    return psutil.sensors_temperatures()['coretemp'][0].current
+# CPU temperature
+temp = psutil.sensors_temperatures()['coretemp'][0].current
 
-def generate_html_file():
-    html = "<table><tr><th>Parameter</th><th>Value</th></tr>"
-    html += f"<tr><td>Disk(s) usage %</td><td>{get_disk_usage()}</td></tr>"
-    html += f"<tr><td>CPU usage %</td><td>{get_cpu_usage()}</td></tr>"
-    html += f"<tr><td>Memory utilization %</td><td>{get_memory_usage()}</td></tr>"
-    html += f"<tr><td>CPU temperature</td><td>{get_cpu_temperature()}</td></tr>"
-    html += "</table>"
-    
-    with open("pysysmon.html", "w") as file:
-        file.write(html)
+with open('pysysmon.html', 'w') as f:
+    f.write('<table>\n')
+    f.write('<tr><th>Parameter</th><th>Value</th></tr>\n')
+    f.write(f'<tr><td>Disk Usage %</td><td>{disk_usage}</td></tr>\n')
+    f.write(f'<tr><td>CPU Usage %</td><td>{cpu_usage}</td></tr>\n')
+    f.write(f'<tr><td>Memory Utilization %</td><td>{mem_usage}</td></tr>\n')
+    f.write(f'<tr><td>CPU Temperature</td><td>{temp}</td></tr>\n')
+    f.write('</table>')
+
