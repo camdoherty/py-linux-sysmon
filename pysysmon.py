@@ -1,7 +1,7 @@
 import psutil
 
 # gives a single float value
-cpu_usage = psutil.cpu_percent()
+cpu_usage = psutil.cpu_percent(interval=1) / psutil.cpu_count()
 
 # gives an object with many fields
 mem = psutil.virtual_memory()
