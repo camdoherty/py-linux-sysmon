@@ -22,4 +22,3 @@ def generate_html_file():
     
     with open("pysysmon.html", "w") as file:
         file.write(html)
-        
