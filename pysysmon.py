@@ -1,87 +1,70 @@
 # Import modules
 import os
 import psutil
-import datetime
+import subprocess
 import pandas as pd
 
-# Define system parameters to monitor
-parameters = ["system errors (24 hours)", "disk(s) usage", "CPUs usage", "memory utilization %", "CPU and GPU temperature"]
-
-# Define function to get system errors from journalctl
-def system_errors():
-    # Run journalctl command with -p err and -S options to filter errors in the last 24 hours
-    command = "journalctl -p err -S '24 hours ago'"
-    # Get the output of the command as a string
-    output = os.popen(command).read()
-    # Return the output or "No errors" if empty
-    return output or "No errors"
-
-# Define function to get disk(s) usage from psutil
-def disk_usage():
-    # Get a list of disk partitions from psutil
+# Define a function to get disk usage %
+def get_disk_usage():
+    # Get the disk partitions
     partitions = psutil.disk_partitions()
-    # Initialize an empty list to store disk usage information
-    disk_usage = []
+    # Create an empty list to store the results
+    results = []
     # Loop through each partition
     for partition in partitions:
-        # Get the device name, mount point and usage percentage from psutil
+        # Get the device name, mount point, and usage %
         device = partition.device
         mountpoint = partition.mountpoint
         usage = psutil.disk_usage(mountpoint).percent
-        # Append a tuple of device, mountpoint and usage to the disk_usage list
-        disk_usage.append((device, mountpoint, usage))
-    # Return the disk_usage list
-    return disk_usage
+        # Append the result as a tuple to the list
+        results.append((device, mountpoint, usage))
+    # Return the list of results
+    return results
 
-# Define function to get CPUs usage from psutil
-def cpus_usage():
-    # Get the number of logical CPUs from psutil
-    cpus = psutil.cpu_count()
-    # Get the usage percentage of each CPU from psutil
-    usage = psutil.cpu_percent(percpu=True)
-    # Zip the cpus and usage lists into a list of tuples
-    cpus_usage = list(zip(range(1, cpus + 1), usage))
-    # Return the cpus_usage list
-    return cpus_usage
+# Define a function to get CPU usage %
+def get_cpu_usage():
+    # Get the CPU usage % as a float
+    usage = psutil.cpu_percent()
+    # Return the result
+    return usage
 
-# Define function to get memory utilization % from psutil
-def memory_utilization():
-    # Get the memory usage percentage from psutil
-    memory = psutil.virtual_memory().percent
-    # Return the memory value
-    return memory
+# Define a function to get memory utilization %
+def get_memory_utilization():
+    # Get the memory utilization % as a float
+    utilization = psutil.virtual_memory().percent
+    # Return the result
+    return utilization
 
-# Define function to get CPU and GPU temperature from psutil (Linux only)
-def temperature():
-    # Get the sensors temperature information from psutil
-    sensors = psutil.sensors_temperatures()
-    # Initialize an empty list to store temperature information
-    temperature = []
-    # Loop through each sensor in sensors
-    for sensor in sensors:
-        # Get the label and current value of the sensor
-        label = sensor
-        value = sensors[sensor][0].current
-        # Append a tuple of label and value to the temperature list
-        temperature.append((label, value))
-    # Return the temperature list
-    return temperature
+# Define a function to get CPU temperature
+def get_cpu_temperature():
+    # Run the command 'sensors' and capture the output as a string
+    output = subprocess.check_output('sensors').decode('utf-8')
+    # Split the output by lines
+    lines = output.split('\n')
+    # Loop through each line
+    for line in lines:
+        # If the line contains 'Core 0'
+        if 'Core 0' in line:
+            # Split the line by spaces and get the third element as the temperature
+            temperature = line.split()[2]
+            # Remove the '+' sign and the '°C' unit from the temperature
+            temperature = temperature.replace('+', '').replace('°C', '')
+            # Convert the temperature to a float
+            temperature = float(temperature)
+            # Return the result
+            return temperature
 
-# Define function to generate an HTML file with a table of system parameters and values
-def generate_html(parameters):
-    # Initialize an empty dictionary to store parameter names and values
-    data = {}
-    # Loop through each parameter in parameters
-    for parameter in parameters:
-        # Evaluate the parameter as a function call and assign the result to data[parameter]
-        data[parameter] = eval(parameter + "()")
-    # Convert the data dictionary into a pandas DataFrame with parameter names as columns and values as rows
-    df = pd.DataFrame(data, index=[0])
-    # Convert the DataFrame into an HTML table with bootstrap styling and save it as "system_monitor.html"
-    df.to_html("system_monitor.html", classes="table table-striped")
-    
-# Call the generate_html function with parameters as argument    
-generate_html(parameters)
+# Call the functions and store the results in variables
+disk_usage = get_disk_usage()
+cpu_usage = get_cpu_usage()
+memory_utilization = get_memory_utilization()
+cpu_temperature = get_cpu_temperature()
 
-# Print a message indicating the script is done and where to find the HTML file 
-print("The script is done. You can find the HTML file with the system parameters in system_monitor.html")
+# Create a pandas DataFrame from the results
+df = pd.DataFrame(disk_usage, columns=['Device', 'Mountpoint', 'Disk Usage %'])
+df['CPU Usage %'] = cpu_usage
+df['Memory Utilization %'] = memory_utilization
+df['CPU Temperature'] = cpu_temperature
+
+# Convert the DataFrame to an HTML file with a table
+df.to_html('system_values.html', index=False)
