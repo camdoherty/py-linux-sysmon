@@ -1,13 +1,14 @@
 # pysysmon
 
-A Python script that reads the following system parameters using psutil
+A Python script thay uses psutil to read current system information and generate an HTML file in the same directory.
+
+System info captured:
 
 - disk(s) usage %
-- CPU(s) usage %
+- CPU usage % (avg of all cores)
 - memory usage %
-- CPU temp in °C
-
-Then generates an HTML file with a table listing the parameters/values
+- CPU avg temp in °C
+- network In/Out in Bytes
 
 ## Requirements
 
