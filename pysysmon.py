@@ -2,8 +2,8 @@ import psutil
 
 # network usage in bytes
 net_io = psutil.net_io_counters()
-net_in_mb = net_io.bytes_recv
-net_out_mb = net_io.bytes_sent
+net_in_bytes = net_io.bytes_recv
+net_out_bytes = net_io.bytes_sent
 
 # disk usage
 disk_usage = psutil.disk_usage('/').percent
@@ -25,7 +25,7 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>CPU Usage %</td><td>{cpu_usage}</td></tr>\n')
     f.write(f'<tr><td>Memory Utilization %</td><td>{mem_usage}</td></tr>\n')
     f.write(f'<tr><td>CPU Temperature</td><td>{temp}</td></tr>\n')
-    f.write(f'<tr><td>Network In Bytes</td><td>{net_in_mb:.2f}</td></tr>\n')
-    f.write(f'<tr><td>Network Out Bytes</td><td>{net_out_mb:.2f}</td></tr>\n')
+    f.write(f'<tr><td>Network In Bytes</td><td>{net_in_bytes:.2f}</td></tr>\n')
+    f.write(f'<tr><td>Network Out Bytes</td><td>{net_out_bytes:.2f}</td></tr>\n')
     f.write('</table>')
     
