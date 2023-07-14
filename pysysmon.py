@@ -1,8 +1,5 @@
 import psutil
-import sensors
-
-# initialize sensors
-sensors.init()
+import subprocess
 
 # network usage in bytes
 net_io = psutil.net_io_counters()
@@ -23,7 +20,7 @@ mem_usage = mem.percent
 temp = psutil.sensors_temperatures()['coretemp'][0].current
 
 # themal sensors
-tsense = sensors.get_detected_chips()
+tsense = subprocess.run(['sensors'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
 # create html file with a table displaying system info
 
@@ -36,13 +33,5 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>CPU Temperature</td><td>{temp}</td></tr>\n')
     f.write(f'<tr><td>Network In Bytes</td><td>{net_in_bytes:.2f}</td></tr>\n')
     f.write(f'<tr><td>Network Out Bytes</td><td>{net_out_bytes:.2f}</td></tr>\n')
-    f.write('<tr><td>Thermal sensors</td><td>')
-    for chip in tsense:
-        f.write(f'{chip}:<br>')
-        for feature in chip:
-            f.write(f'{feature.label}: {feature.get_value()}<br>')
-    f.write('</td></tr>\n')
+    f.write(f'<tr><td>Thermal sensors</td><td><pre>{tsense}</pre></td></tr>\n')
     f.write('</table>')
-
-# close sensors
-sensors.cleanup()
