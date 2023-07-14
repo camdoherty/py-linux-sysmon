@@ -4,7 +4,7 @@ A python script that collects and displays system information in an HTML file. I
 
 ## Features
 
-The following system information is displayed in a table format in an html file.
+The following system information is displayed in table format in an html file.
 
 - Disk usage percentage
 - CPU usage percentage
