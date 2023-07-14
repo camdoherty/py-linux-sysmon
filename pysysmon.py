@@ -52,5 +52,6 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>Memory Usage %</td><td>{mem_usage}</td></tr>\n')
     f.write(f'<tr><td>Network In Rate</td><td>{net_in_rate:.2f} bytes/s</td></tr>\n')
     f.write(f'<tr><td>Network Out Rate</td><td>{net_out_rate:.2f} bytes/s</td></tr>\n')
+    f.write(f'<tr><td></td><td><pre></pre></td></tr>\n')
     f.write(f'<tr><td>Thermal sensors</td><td><pre>{tsense}</pre></td></tr>\n')
     f.write('</table>')
