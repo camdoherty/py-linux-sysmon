@@ -1,24 +1,34 @@
 # pysysmon
 
-A Python script that uses psutil to read current system information and generate an HTML file in the same directory.
+A python script that collects and displays system information in an HTML file. It uses the psutil to get metrics of system performance, health and security.
 
-System info captured
+## Features
 
-- disk(s) usage %
-- CPU usage % (avg of all cores)
-- memory usage %
-- CPU avg temp in °C
-- network In/Out in Bytes
+The following system information is displayed in a table format in an html file.
+
+- Disk usage percentage
+- CPU usage percentage
+- Memory usage percentage
+- Network in and out rate (bytes/second)
+- Thermal sensors output
+- User accounts and privileges
+- Processes and attributes
+- Network connections and details
 
 ## Requirements
 
-- Python3 
 - psutil
 
-Install using pip or apt:
+Installation:
 
-```pip install psutil```
+```bash
+sudo apt install python3-psutil
+```
 
-or
+## Usage
 
-```apt install python3-psutil```
+```bash
+python pysysmon.py
+```
+
+This will create an HTML file called pysysmon.html in the same directory as the script. You can open this file in your browser to view the system information.
