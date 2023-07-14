@@ -1,8 +1,7 @@
 import psutil
 import time
 import subprocess
-
-#### network rate
+import pwd
 
 # sample the counters at time t1
 t1 = time.time()
@@ -28,8 +27,6 @@ time_diff = t2 - t1
 net_in_rate = net_in_diff / time_diff
 net_out_rate = net_out_diff / time_diff
 
-####
-
 # disk usage
 disk_usage = psutil.disk_usage('/').percent
 
@@ -43,6 +40,15 @@ mem_usage = mem.percent
 # themal sensors
 tsense = subprocess.run(['sensors'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
+# user accounts
+users = pwd.getpwall()
+
+# processes
+processes = psutil.process_iter(attrs=['pid', 'name', 'username', 'cpu_percent', 'memory_percent', 'status'])
+
+# network connections
+connections = psutil.net_connections(kind='inet')
+
 # create html file with a table displaying system info
 with open('pysysmon.html', 'w') as f:
     f.write('<table>\n')
@@ -52,6 +58,18 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>Memory Usage %</td><td>{mem_usage}</td></tr>\n')
     f.write(f'<tr><td>Network In Rate</td><td>{net_in_rate:.2f} bytes/s</td></tr>\n')
     f.write(f'<tr><td>Network Out Rate</td><td>{net_out_rate:.2f} bytes/s</td></tr>\n')
-    f.write(f'<tr><td></td><td><pre></pre></td></tr>\n')
     f.write(f'<tr><td>Thermal sensors</td><td><pre>{tsense}</pre></td></tr>\n')
+    f.write('<tr><td>User accounts</td><td><pre>')
+    for user in users:
+        f.write(f'{user.pw_name} ({user.pw_uid}): {user.pw_gecos}\n')
+    f.write('</pre></td></tr>\n')
+    f.write('<tr><td>Processes</td><td><pre>')
+    for process in processes:
+        f.write(f'{process.info}\n')
+    f.write('</pre></td></tr>\n')
+    f.write('<tr><td>Network connections</td><td><pre>')
+    for connection in connections:
+        f.write(f'{connection}\n')
+    f.write('</pre></td></tr>\n')
     f.write('</table>')
+    
