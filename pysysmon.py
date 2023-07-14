@@ -1,7 +1,8 @@
 import psutil
 import time
+import subprocess
 
-#### calculate network IO rate in bytes/second
+#### network rate
 
 # sample the counters at time t1
 t1 = time.time()
@@ -23,11 +24,11 @@ net_in_diff = net_in_bytes2 - net_in_bytes1
 net_out_diff = net_out_bytes2 - net_out_bytes1
 time_diff = t2 - t1
 
-####
-
 # calculate the network usage as a rate (bytes per second)
 net_in_rate = net_in_diff / time_diff
 net_out_rate = net_out_diff / time_diff
+
+####
 
 # disk usage
 disk_usage = psutil.disk_usage('/').percent
@@ -40,7 +41,7 @@ mem = psutil.virtual_memory()
 mem_usage = mem.percent
 
 # themal sensors
-tsense = sensors.get_detected_chips()
+tsense = subprocess.run(['sensors'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
 # create html file with a table displaying system info
 with open('pysysmon.html', 'w') as f:
@@ -52,12 +53,5 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>CPU Temperature</td><td>{temp}</td></tr>\n')
     f.write(f'<tr><td>Network In Rate</td><td>{net_in_rate:.2f} bytes/s</td></tr>\n')
     f.write(f'<tr><td>Network Out Rate</td><td>{net_out_rate:.2f} bytes/s</td></tr>\n')
-    
-    f.write('<tr><td>Thermal sensors</td><td>')
-    for chip in tsense:
-        f.write(f'{chip}:<br>')
-        for feature in chip:
-            f.write(f'{feature.label}: {feature.get_value()}<br>')
-    f.write('</td></tr>\n')
-    
+    f.write(f'<tr><td>Thermal sensors</td><td><pre>{tsense}</pre></td></tr>\n')
     f.write('</table>')
