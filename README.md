@@ -1,8 +1,8 @@
 # pysysmon
 
-A Python script thay uses psutil to read current system information and generate an HTML file in the same directory.
+A Python script that uses psutil to read current system information and generate an HTML file in the same directory.
 
-System info captured:
+System info captured
 
 - disk(s) usage %
 - CPU usage % (avg of all cores)
