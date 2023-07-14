@@ -50,7 +50,6 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>Disk Usage %</td><td>{disk_usage}</td></tr>\n')
     f.write(f'<tr><td>CPU Usage %</td><td>{cpu_usage}</td></tr>\n')
     f.write(f'<tr><td>Memory Usage %</td><td>{mem_usage}</td></tr>\n')
-    f.write(f'<tr><td>CPU Temperature</td><td>{temp}</td></tr>\n')
     f.write(f'<tr><td>Network In Rate</td><td>{net_in_rate:.2f} bytes/s</td></tr>\n')
     f.write(f'<tr><td>Network Out Rate</td><td>{net_out_rate:.2f} bytes/s</td></tr>\n')
     f.write(f'<tr><td>Thermal sensors</td><td><pre>{tsense}</pre></td></tr>\n')
