@@ -54,10 +54,10 @@ with open('pysysmon.html', 'w') as f:
     f.write(f'<tr><td>Network Out Rate</td><td>{net_out_rate:.2f} bytes/s</td></tr>\n')
     
     f.write('<tr><td>Thermal sensors</td><td>')
-        for chip in tsense:
-            f.write(f'{chip}:<br>')
-            for feature in chip:
-                f.write(f'{feature.label}: {feature.get_value()}<br>')
+    for chip in tsense:
+        f.write(f'{chip}:<br>')
+        for feature in chip:
+            f.write(f'{feature.label}: {feature.get_value()}<br>')
     f.write('</td></tr>\n')
     
     f.write('</table>')
