@@ -1,0 +1,4 @@
+- add login history 24h
+- add top programs
+- add GBs free/used/total for storage and Mem
+- add sensors
