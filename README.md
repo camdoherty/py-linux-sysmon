@@ -1,6 +1,6 @@
 # pysysmon
 
-A python script that collects and displays system information in an HTML file. It uses the psutil to get metrics of system performance, health and security.
+A python script that collects and displays system information in an HTML file. It uses psutil to get metrics of system performance, health and security.
 
 ## Features
 
