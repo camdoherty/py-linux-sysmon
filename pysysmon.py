@@ -1,4 +1,5 @@
 import psutil
+import sensors
 
 # network usage in bytes
 net_io = psutil.net_io_counters()
